@@ -1,0 +1,5 @@
+Assume:
+
+Equidistant Stations transmitting at equal power and not moving
+All stations in range are active
+No RTS/CTS
