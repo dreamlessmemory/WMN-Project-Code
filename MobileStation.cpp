@@ -1,5 +1,7 @@
 #include "MobileStation.h"
 
+using namespace std;
+
 MobileStation::MobileStation(){
 	stationNumber = rand() % 10 + 1;
 	MobileStation::init();

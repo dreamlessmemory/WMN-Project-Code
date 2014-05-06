@@ -1,11 +1,6 @@
 #include "BaseStation.h"
-#include "MobileStation.h"
 
 using namespace std;
-
-bool getChannelStatus();
-bool attemptTransmission(MobileStation *);
-bool finishTransmission();
 
 BaseStation::BaseStation(){
 	idNumber = 0;
@@ -15,13 +10,13 @@ bool BaseStation::getChannelStatus(void){
 	return busy;
 }
 
-bool BaseStation::attemptTransmission(MobileStation * station){
+bool BaseStation::attemptTransmission(MobileStation* station){
 	if(busy == BUSY){
 		return COLLISION;
 	} else {
 		currentTransmitter = station;
 		busy = BUSY;
-		return SUCESS;
+		return SUCCESS;
 	}
 }
 
@@ -31,3 +26,6 @@ bool BaseStation::finishTransmission(){
 	return CLEAR;
 }
 		
+int main(){
+	return 0;
+}

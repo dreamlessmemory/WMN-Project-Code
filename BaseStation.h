@@ -20,20 +20,18 @@
 #define SUCCESS true
 #define COLLISION false
 
-using namespace std;
-
-//class MobileStation;
+class MobileStation;
 
 class BaseStation{
 	private:
 		bool busy;
-		MobileStation * currentTranmitter;
+		MobileStation* currentTransmitter;
 		int idNumber;
 	
 	public:
 		BaseStation();
 		bool getChannelStatus(void);
-		bool attemptTransmission(MobileStation * station);
+		bool attemptTransmission(MobileStation*);
 		bool finishTransmission(void);
 };
 #endif

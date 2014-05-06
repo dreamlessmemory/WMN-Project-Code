@@ -1,5 +1,5 @@
-#ifndef MOBILESTATION
-#define MOBILESTATION
+#ifndef MOBILESTATION_H
+#define MOBILESTATION_H
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -46,16 +46,13 @@
 #define DIFS 10 //Placeholder
 #define SIFS 2 //Placeholder
 
-using namespace std;
-
 class BaseStation;
 
 class MobileStation{
 	private:
 	int stationNumber;
 	float x_coordinate, y_coordinate;
-	BaseStation * baseStationName;
-	//CommChan * channel;
+	BaseStation* baseStationName;
 	
 	public:
 		MobileStation();
