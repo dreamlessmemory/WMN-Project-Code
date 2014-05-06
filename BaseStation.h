@@ -26,6 +26,7 @@ class BaseStation{
 	private:
 		bool busy;
 		MobileStation* currentTransmitter;
+		std::vector<MobileStation*> connectedStations;
 		int idNumber;
 	
 	public:
@@ -33,5 +34,7 @@ class BaseStation{
 		bool getChannelStatus(void);
 		bool attemptTransmission(MobileStation*);
 		bool finishTransmission(void);
+		void debug_printStatus(void);
+		void addStation(MobileStation*);
 };
 #endif

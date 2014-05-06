@@ -25,6 +25,16 @@ bool BaseStation::finishTransmission(){
 	currentTransmitter = NULL;
 	return CLEAR;
 }
+
+void BaseStation::addStation(MobileStation* station){
+	connectedStations.push_back(station);
+}
+
+void BaseStation::debug_printStatus(){
+	for(std::vector<MobileStation*>::iterator it = connectedStations.begin(); it != connectedStations.end(); ++it) {
+		//(*it)->debug_printStatus();
+	}
+}
 		
 int main(){
 	return 0;
