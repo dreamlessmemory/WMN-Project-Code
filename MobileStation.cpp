@@ -47,11 +47,8 @@ void MobileStation::backoff(int accessClass){
 	sleep(backoff_time);//use usleep?
 }
 
-bool MobileStation::transmit(int accessClass){
-	//Wait DIFS
-	sleep(DIFS);
-	//Wait AIFS
-		switch(accessClass){
+void MobileStation::waitAIFS(int accessClass){
+	switch(accessClass){
 		case BEST_EFFORT:
 			sleep(AIFSN_BE);
 			break;
@@ -68,19 +65,35 @@ bool MobileStation::transmit(int accessClass){
 			sleep(AIFSN_DA);
 			break;
 	}
+}
+
+bool MobileStation::transmit(int accessClass){
+	//Wait DIFS
+	sleep(DIFS);
+	waitAIFS(accessClass);
 	//Sense Channel
-	
+	bool ready = baseStationName -> getChannelStatus(); 
+	while(!ready){
+		usleep(500); //wait until transmission
+		ready = baseStationName -> getChannelStatus();
+	}	
 	//set to transmitting mode
-	
-	//stuff
+	bool attempt = baseStationName -> attemptTransmission(this);
+	while(!attempt){
+		backoff(accessClass);//back off
+		attempt = baseStationName -> attemptTransmission(this); //try again
+	}
+	//we got here sucessfully
+	baseStationName->finishTransmission();
 	
 	return true; //we tx successfully
 }
 
 void MobileStation::main_loop(){
 	//pick packet if no new one
-	//wait for backoff
 	//transmit loop
+	
+	std::cout << "Transmission completed" << endl;
 }
 
 void MobileStation::debug_printStatus(){

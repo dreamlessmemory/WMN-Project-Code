@@ -50,14 +50,17 @@ class BaseStation;
 
 class MobileStation{
 	private:
-	int stationNumber;
-	float x_coordinate, y_coordinate;
-	BaseStation* baseStationName;
+		int stationNumber;
+		float x_coordinate, y_coordinate;
+		BaseStation* baseStationName;
 	
 	public:
+		int packets[5];
+		
 		MobileStation();
 		MobileStation(int, BaseStation *);
 		void init();
+		void waitAIFS(int);
 		void backoff(int);
 		bool transmit(int);
 		void main_loop();
