@@ -20,31 +20,37 @@
 //Best Effort
 #define CWMIN_BE 15
 #define CWMAX_BE 1023
-#define AIFSN_BE 3
+#define AIFSN_BE 500000
 
 // Background
 #define CWMIN_BK 15
 #define CWMAX_BK 1023
-#define AIFSN_BK 7
+#define AIFSN_BK 700000
 
 // Video
 #define CWMIN_VI 7
 #define CWMAX_VI 15
-#define AIFSN_VI 2
+#define AIFSN_VI 300000
 
 // Voice
 #define CWMIN_VO 3
 #define CWMAX_VO 7
-#define AIFSN_VO 2
+#define AIFSN_VO 300000
 
 // Data
 #define CWMIN_DA 15
 #define CWMAX_DA 20
-#define AIFSN_DA 2
+#define AIFSN_DA 300000
 
 // Frame time
-#define DIFS 10 //Placeholder
-#define SIFS 2 //Placeholder
+#define DIFS 500 //Placeholder
+#define SIFS 200 //Placeholder
+
+#define CLEAR true
+#define BUSY false
+
+#define SUCCESS true
+#define COLLISION false
 
 class BaseStation;
 
@@ -59,6 +65,7 @@ class MobileStation{
 		
 		MobileStation();
 		MobileStation(int, BaseStation *);
+		
 		void init();
 		void waitAIFS(int);
 		void backoff(int);

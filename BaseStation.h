@@ -24,13 +24,13 @@ class MobileStation;
 
 class BaseStation{
 	private:
-		bool busy;
+		bool status;
 		MobileStation* currentTransmitter;
-		std::vector<MobileStation> connectedStations;
 		int idNumber;
 	
 	public:
 		BaseStation();
+		std::vector<MobileStation> connectedStations;
 		bool getChannelStatus(void);
 		bool attemptTransmission(MobileStation*);
 		bool finishTransmission(void);

@@ -3,25 +3,27 @@
 using namespace std;
 
 BaseStation::BaseStation(){
+	status = CLEAR;
 	idNumber = 0;
 }
 
 bool BaseStation::getChannelStatus(void){
-	return busy;
+	//cout << "Base Station Clear = " << status << endl;
+	return status;
 }
 
 bool BaseStation::attemptTransmission(MobileStation* station){
-	if(busy == BUSY){
+	if(status == BUSY){
 		return COLLISION;
 	} else {
 		currentTransmitter = station;
-		busy = BUSY;
+		status = BUSY;
 		return SUCCESS;
 	}
 }
 
 bool BaseStation::finishTransmission(){
-	busy = CLEAR;
+	status = CLEAR;
 	currentTransmitter = NULL;
 	return CLEAR;
 }
