@@ -26,18 +26,13 @@ void MobileStation::backoff(int accessClass){
 			backoff_time = rand() % (CWMAX_BK - CWMIN_BK) + CWMIN_BK;
 			break;
 		case VIDEO:
-			cw_min = (CWMIN_VI + 1)/2 -1;
-			backoff_time = rand() % (CWMAX_VI - cw_min) + cw_min;
+			backoff_time = rand() % (CWMAX_VI - CWMIN_VI) + CW_MIN_VI;
 			break;
 		case VOICE:
-			cw_min = (CWMIN_VO + 1)/4 -1;
-			cw_min = (CWMIN_VO + 1)/2 -1; //MAX?
-			backoff_time = rand() % (cw_max - cw_min) + cw_min;
+			backoff_time = rand() % (CWMAX_VO - CWMIN_VO) + CWMIN_VO;
 			break;
 		case DATA:
-			cw_min = (CWMIN_DA + 1)/8 -1;
-			cw_min = (CWMIN_DA + 1)/4 -1; //MAX?
-			backoff_time = rand() % (cw_max - cw_min) + cw_min;
+			backoff_time = rand() % (CWMAX_DA - CWMIN_DA) + CWMIN_DA;
 			break;
 	}
 	usleep(backoff_time * 1000);//use usleep?
