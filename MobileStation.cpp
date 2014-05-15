@@ -9,6 +9,14 @@ MobileStation::MobileStation(){
 MobileStation::MobileStation(int number, BaseStation * station){
 	stationNumber = number;
 	baseStationName = station;
+	
+	//log setup
+	/*std::stringstream ss;//create a stringstream
+	ss << stationNumber;//add number to the stream
+	string log_name = std::string("Station_") + ss.str() + std::string(".txt");
+	cout << "log name: " << log_name << endl;
+	log->open(log_name.c_str(), std::fstream::in | std::fstream::out | std::fstream::trunc); //problem
+	cout << "pass\n";*/
 }
 
 void MobileStation::backoff(int accessClass){
@@ -76,7 +84,7 @@ bool MobileStation::transmit(int accessClass){
 		cout << "Station " << stationNumber << " Backing off" << endl;
 		backoff(accessClass);//back off
 		waitStandard(accessClass);
-		cout << "Station " << stationNumber << " re-attempting" << endl;
+		//cout << "Station " << stationNumber << " re-attempting" << endl;
 		attempt = baseStationName -> attemptTransmission(this); //try again
 	}
 	//we got here sucessfully
@@ -87,18 +95,6 @@ bool MobileStation::transmit(int accessClass){
 	baseStationName->finishTransmission();
 	
 	return true; //we tx successfully
-}
-
-void MobileStation::main_loop(){
-	//pick packet if no new one
-	//transmit loop
-	int newPacket = pickPacket();
-	while(newPacket != -1){
-		transmit(newPacket);
-		newPacket = pickPacket();
-	}
-	
-	std::cout << "Station " << stationNumber << " Transmissions completed" << endl;
 }
 
 void MobileStation::debug_printStatus(){
@@ -121,21 +117,22 @@ int MobileStation::pickPacket(void){
 }
 
 void MobileStation::pretendTransmitting(int accessClass){
+	//int packetSize = 0;
 	switch(accessClass){
 		case BEST_EFFORT:
-			usleep(500000);
+			usleep(5000);
 			break;
 		case BACKGROUND:
-			usleep(300000);
+			usleep(3000);
 			break;
 		case VIDEO:
-			usleep(700000);;
+			usleep(7000);
 			break;
 		case VOICE:
-			usleep(700000);
+			usleep(7000);
 			break;
 		case DATA:
-			usleep(1000000);
+			usleep(10000);
 			break;
 	}
 }
@@ -148,7 +145,44 @@ void MobileStation::waitStandard(int accessClass){
 		waitAIFS(accessClass); //Wait AIFS
 		//cout << "Station " << stationNumber << " waiting AIFS" << endl;
 		//Sense Channel
-		cout << "Station " << stationNumber << " Sensing Channel" << endl;
+		//cout << "Station " << stationNumber << " Sensing Channel" << endl;
 		status = baseStationName -> getChannelStatus();
 	} while(status==BUSY);
+}
+
+void MobileStation::main_loop(){
+	
+	std::clock_t start;
+    double duration;
+    start = std::clock();
+    
+    std::ofstream log;//writing
+    std::stringstream ss;//create a stringstream
+	ss << stationNumber;//add number to the stream
+	string log_name = std::string("Station_") + ss.str() + std::string(".txt");
+	//cout << "log name: " << log_name << endl;
+	log.open(log_name.c_str(), std::fstream::in | std::fstream::out | std::fstream::trunc); //problem
+    
+    //Keep Track of what gets tx
+    log << log_name << endl;
+    log << "Transmitting:" << endl;
+    log << "Best Effort\t-\t" << packets[0] << endl;
+    log << "Background\t-\t" << packets[1] << endl;
+    log << "Video\t\t-\t" << packets[2] << endl;
+    log << "Voice\t\t-\t" << packets[3] << endl;
+    log << "Data\t\t-\t" << packets[4] << endl;
+    
+    //Transmit loop
+	int newPacket = pickPacket();
+	while(newPacket != -1){
+		transmit(newPacket);
+		newPacket = pickPacket();
+	}
+	
+	std::cout << "Station " << stationNumber << " Transmissions completed" << endl;
+	
+	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+	std::cout << "Total time: " << duration << " seconds" << endl;
+	log << "Total time: " << duration << " seconds" << endl;
+	log.close();
 }
