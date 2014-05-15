@@ -6,6 +6,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <iostream>
+#include <fstream>
 #include "BaseStation.h"
 
 
@@ -66,12 +67,14 @@ class MobileStation{
 		MobileStation();
 		MobileStation(int, BaseStation *);
 		
-		void init();
 		void waitAIFS(int);
 		void backoff(int);
 		bool transmit(int);
 		void main_loop();
 		void debug_printStatus(void);
+		int pickPacket(void);
+		void pretendTransmitting(int);
+		void waitStandard(int);
 };
 
 #endif

@@ -25,18 +25,18 @@ int main( int argc, const char* argv[] ){
 		return 0;
 	}
 	
-	cout << "Program started" << endl;
+	//cout << "Program started" << endl;
 	
 	//BS setup
 	BaseStation * base = new BaseStation();
 	
-	cout << "Checkpoint" << endl;
+	//cout << "Checkpoint" << endl;
 	
 	//MS setup
 	std::ifstream infile(argv[1]);
 	int stationNumber, be, bk, vi, vo, da;
 	while(infile >> stationNumber >> be >> bk >> vi >> vo >> da){
-		cout << "CheckpointX" << endl;
+		//cout << "CheckpointX" << endl;
 		MobileStation * temp = new MobileStation(stationNumber, base);
 		temp->packets[0] = be;
 		temp->packets[1] = bk;
@@ -47,7 +47,7 @@ int main( int argc, const char* argv[] ){
 	}
 	
 	//startup MS
-	cout << "Checkpoint" << endl;
+	//cout << "Checkpoint" << endl;
 	boost::thread_group mobileThreads;
 	for(std::vector<MobileStation>::iterator it = base->connectedStations.begin(); it != base->connectedStations.end(); ++it) {
 		//boost::thread stationThread(startMobileStation, it);

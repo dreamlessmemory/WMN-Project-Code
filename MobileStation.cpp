@@ -4,18 +4,11 @@ using namespace std;
 
 MobileStation::MobileStation(){
 	stationNumber = rand() % 10 + 1;
-	MobileStation::init();
 }
 
 MobileStation::MobileStation(int number, BaseStation * station){
 	stationNumber = number;
 	baseStationName = station;
-	MobileStation::init();
-}
-
-void MobileStation::init(){
-	x_coordinate = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/1000));
-	y_coordinate = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/1000));
 }
 
 void MobileStation::backoff(int accessClass){
@@ -68,40 +61,29 @@ void MobileStation::waitAIFS(int accessClass){
 }
 
 bool MobileStation::transmit(int accessClass){
-	//Wait DIFS
-	cout << "Station " << stationNumber << " waiting DIFS\n";
-	usleep(DIFS);
 	
-	//Wait AIFS
-	waitAIFS(accessClass);
-	cout << "Station " << stationNumber << " waiting AIFS\n";
-	//Sense Channel
-	cout << "Station " << stationNumber << " Sensing Channel\n";
-	bool status = baseStationName -> getChannelStatus(); 
-	while(status==BUSY){
-		cout << "Station " << stationNumber << " waiting for clear channel\n";
-		usleep(50000); //wait until transmission
-		status = baseStationName -> getChannelStatus();
-	}
+	//Wait for open channel
+	waitStandard(accessClass);
 	//random wait for collisions?
-	int wait = rand() % 300000;
+	int wait = rand() % 30000;
 	usleep(wait);
 	
 	
 	//set to transmitting mode
-	cout << "Station " << stationNumber << " attempting to transmit\n";
+	cout << "Station " << stationNumber << " attempting to transmit" << endl;
 	bool attempt = baseStationName -> attemptTransmission(this);
 	while(!attempt){
-		cout << "Station " << stationNumber << " Backing off\n";
+		cout << "Station " << stationNumber << " Backing off" << endl;
 		backoff(accessClass);//back off
-		cout << "Station " << stationNumber << " re-attempting\n";
+		waitStandard(accessClass);
+		cout << "Station " << stationNumber << " re-attempting" << endl;
 		attempt = baseStationName -> attemptTransmission(this); //try again
 	}
 	//we got here sucessfully
 	//pretend to transmit
-	usleep(500000);
+	pretendTransmitting(accessClass);
 	//finish
-	cout << "Station " << stationNumber << " Tx Sucess\n";
+	cout << "Station " << stationNumber << " Tx Sucess" << endl;
 	baseStationName->finishTransmission();
 	
 	return true; //we tx successfully
@@ -110,9 +92,10 @@ bool MobileStation::transmit(int accessClass){
 void MobileStation::main_loop(){
 	//pick packet if no new one
 	//transmit loop
-	
-	for(int i = 0; i < 3; i++){
-		transmit(BEST_EFFORT);
+	int newPacket = pickPacket();
+	while(newPacket != -1){
+		transmit(newPacket);
+		newPacket = pickPacket();
 	}
 	
 	std::cout << "Station " << stationNumber << " Transmissions completed" << endl;
@@ -122,3 +105,50 @@ void MobileStation::debug_printStatus(){
 	cout << "LOL" << endl;
 }
 
+int MobileStation::pickPacket(void){
+	//check if empty
+	if((packets[0] + packets[1] + packets[2] + packets[3] + packets[4]) == 0)
+		return -1;
+	int picked = -1;
+	while (picked == -1){
+		int check = rand() % 5;
+		if(packets[check] > 0){
+			picked = check;
+			packets[check]--;
+		}
+	}
+	return picked;
+}
+
+void MobileStation::pretendTransmitting(int accessClass){
+	switch(accessClass){
+		case BEST_EFFORT:
+			usleep(500000);
+			break;
+		case BACKGROUND:
+			usleep(300000);
+			break;
+		case VIDEO:
+			usleep(700000);;
+			break;
+		case VOICE:
+			usleep(700000);
+			break;
+		case DATA:
+			usleep(1000000);
+			break;
+	}
+}
+
+void MobileStation::waitStandard(int accessClass){
+	bool status = baseStationName -> getChannelStatus();
+	do {
+		//cout << "Station " << stationNumber << " waiting DIFS" << endl;
+		usleep(DIFS);//Wait DIFS
+		waitAIFS(accessClass); //Wait AIFS
+		//cout << "Station " << stationNumber << " waiting AIFS" << endl;
+		//Sense Channel
+		cout << "Station " << stationNumber << " Sensing Channel" << endl;
+		status = baseStationName -> getChannelStatus();
+	} while(status==BUSY);
+}
