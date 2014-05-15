@@ -10,13 +10,8 @@ MobileStation::MobileStation(int number, BaseStation * station){
 	stationNumber = number;
 	baseStationName = station;
 	
-	//log setup
-	/*std::stringstream ss;//create a stringstream
-	ss << stationNumber;//add number to the stream
-	string log_name = std::string("Station_") + ss.str() + std::string(".txt");
-	cout << "log name: " << log_name << endl;
-	log->open(log_name.c_str(), std::fstream::in | std::fstream::out | std::fstream::trunc); //problem
-	cout << "pass\n";*/
+	delay_time = 0.0;
+	wait_time = 0.0;
 }
 
 void MobileStation::backoff(int accessClass){
@@ -76,10 +71,11 @@ bool MobileStation::transmit(int accessClass){
 	int wait = rand() % 30000;
 	usleep(wait);
 	
-	
 	//set to transmitting mode
 	cout << "Station " << stationNumber << " attempting to transmit" << endl;
 	bool attempt = baseStationName -> attemptTransmission(this);
+	std::clock_t start;
+    start = std::clock();
 	while(!attempt){
 		cout << "Station " << stationNumber << " Backing off" << endl;
 		backoff(accessClass);//back off
@@ -87,7 +83,8 @@ bool MobileStation::transmit(int accessClass){
 		//cout << "Station " << stationNumber << " re-attempting" << endl;
 		attempt = baseStationName -> attemptTransmission(this); //try again
 	}
-	//we got here sucessfully
+	delay_time += ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+
 	//pretend to transmit
 	pretendTransmitting(accessClass);
 	//finish
@@ -139,6 +136,8 @@ void MobileStation::pretendTransmitting(int accessClass){
 
 void MobileStation::waitStandard(int accessClass){
 	bool status = baseStationName -> getChannelStatus();
+	std::clock_t start;
+    start = std::clock();
 	do {
 		//cout << "Station " << stationNumber << " waiting DIFS" << endl;
 		usleep(DIFS);//Wait DIFS
@@ -148,6 +147,7 @@ void MobileStation::waitStandard(int accessClass){
 		//cout << "Station " << stationNumber << " Sensing Channel" << endl;
 		status = baseStationName -> getChannelStatus();
 	} while(status==BUSY);
+	wait_time += ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 }
 
 void MobileStation::main_loop(){
@@ -184,5 +184,7 @@ void MobileStation::main_loop(){
 	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 	std::cout << "Total time: " << duration << " seconds" << endl;
 	log << "Total time: " << duration << " seconds" << endl;
+	log << "Wait time: " << wait_time << " seconds" << endl;
+	log << "Delay time: " << delay_time << " seconds" << endl;
 	log.close();
 }

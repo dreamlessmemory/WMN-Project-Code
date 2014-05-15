@@ -66,6 +66,8 @@ class MobileStation{
 	public:
 		//tracking
 		int packets[5];
+		double delay_time;
+		double wait_time;
 		
 		//constructors
 		MobileStation();
