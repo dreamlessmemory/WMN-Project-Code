@@ -14,6 +14,9 @@ bool BaseStation::getChannelStatus(void){
 
 bool BaseStation::attemptTransmission(MobileStation* station){
 	if(status == BUSY){
+		status = CLEAR;
+		currentTransmitter->collided = true;
+		currentTransmitter = NULL;
 		return COLLISION;
 	} else {
 		currentTransmitter = station;

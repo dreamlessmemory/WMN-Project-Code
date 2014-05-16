@@ -9,6 +9,7 @@ MobileStation::MobileStation(){
 MobileStation::MobileStation(int number, BaseStation * station){
 	stationNumber = number;
 	baseStationName = station;
+	collided = false;
 	
 	delay_time = 0.0;
 	wait_time = 0.0;
@@ -16,8 +17,6 @@ MobileStation::MobileStation(int number, BaseStation * station){
 
 void MobileStation::backoff(int accessClass){
 	int backoff_time;
-	int cw_min = 0;
-	int cw_max = 0;
 	switch(accessClass){
 		case BEST_EFFORT:
 			backoff_time = rand() % (CWMAX_BE - CWMIN_BE) + CWMIN_BE;
@@ -26,7 +25,7 @@ void MobileStation::backoff(int accessClass){
 			backoff_time = rand() % (CWMAX_BK - CWMIN_BK) + CWMIN_BK;
 			break;
 		case VIDEO:
-			backoff_time = rand() % (CWMAX_VI - CWMIN_VI) + CW_MIN_VI;
+			backoff_time = rand() % (CWMAX_VI - CWMIN_VI) + CWMIN_VI;
 			break;
 		case VOICE:
 			backoff_time = rand() % (CWMAX_VO - CWMIN_VO) + CWMIN_VO;
@@ -63,10 +62,10 @@ bool MobileStation::transmit(int accessClass){
 	//Wait for open channel
 	waitStandard(accessClass);
 	//random wait for collisions?
-	int wait = rand() % 30000;
+	int wait = rand() % 100;
 	usleep(wait);
 	
-	//set to transmitting mode
+	//Attempt to Secure Channel
 	cout << "Station " << stationNumber << " attempting to transmit" << endl;
 	bool attempt = baseStationName -> attemptTransmission(this);
 	std::clock_t start;
@@ -75,13 +74,21 @@ bool MobileStation::transmit(int accessClass){
 		cout << "Station " << stationNumber << " Backing off" << endl;
 		backoff(accessClass);//back off
 		waitStandard(accessClass);
-		//cout << "Station " << stationNumber << " re-attempting" << endl;
+		cout << "Station " << stationNumber << " re-attempting" << endl;
 		attempt = baseStationName -> attemptTransmission(this); //try again
 	}
 	delay_time += ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
 	//pretend to transmit
-	pretendTransmitting(accessClass);
+	bool finished = pretendTransmitting(accessClass);
+	while(!finished){
+		cout << "Station " << stationNumber << " Collided" << endl;
+		attempt = baseStationName -> attemptTransmission(this);
+		if(!attempt)
+			continue;
+		cout << "Station " << stationNumber << " re-tx" << endl;
+		finished = pretendTransmitting(accessClass);
+	}
 	//finish
 	cout << "Station " << stationNumber << " Tx Sucess" << endl;
 	baseStationName->finishTransmission();
@@ -108,25 +115,35 @@ int MobileStation::pickPacket(void){
 	return picked;
 }
 
-void MobileStation::pretendTransmitting(int accessClass){
+bool MobileStation::pretendTransmitting(int accessClass){
 	//int packetSize = 0;
+	int sleepTime = 0;
 	switch(accessClass){
 		case BEST_EFFORT:
-			usleep(5000);
+			sleepTime = 5000;
 			break;
 		case BACKGROUND:
-			usleep(3000);
+			sleepTime = 3000;
 			break;
 		case VIDEO:
-			usleep(7000);
+			sleepTime = 7000;
 			break;
 		case VOICE:
-			usleep(7000);
+			sleepTime = 7000;
 			break;
 		case DATA:
-			usleep(10000);
+			sleepTime = 10000;
 			break;
 	}
+	while (sleepTime >= 0){
+		usleep(50);
+		if(collided){
+			collided = false;
+			return COLLISION;
+		}
+		sleepTime -= 50;
+	}
+	return SUCCESS;
 }
 
 void MobileStation::waitStandard(int accessClass){

@@ -24,27 +24,27 @@
 //Best Effort
 #define CWMIN_BE 15
 #define CWMAX_BE 1023
-#define AIFSN_BE 5000
+#define AIFSN_BE 500
 
 // Background
 #define CWMIN_BK 15
 #define CWMAX_BK 1023
-#define AIFSN_BK 7000
+#define AIFSN_BK 700
 
 // Video
 #define CWMIN_VI 7
 #define CWMAX_VI 15
-#define AIFSN_VI 3000
+#define AIFSN_VI 300
 
 // Voice
 #define CWMIN_VO 3
 #define CWMAX_VO 7
-#define AIFSN_VO 3000
+#define AIFSN_VO 300
 
 // Data
 #define CWMIN_DA 15
 #define CWMAX_DA 20
-#define AIFSN_DA 3000
+#define AIFSN_DA 300
 
 // Frame time
 #define DIFS 500 //Placeholder
@@ -69,6 +69,9 @@ class MobileStation{
 		double delay_time;
 		double wait_time;
 		
+		//Flags
+		bool collided;
+		
 		//constructors
 		MobileStation();
 		MobileStation(int, BaseStation *);
@@ -78,7 +81,7 @@ class MobileStation{
 		void backoff(int);
 		bool transmit(int);
 		void debug_printStatus(void);
-		void pretendTransmitting(int);
+		bool pretendTransmitting(int);
 		void waitStandard(int);
 		
 		//operations
