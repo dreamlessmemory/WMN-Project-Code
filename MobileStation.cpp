@@ -104,6 +104,7 @@ bool MobileStation::transmit(int accessClass){
 		cout << "Station " << stationNumber << " Tx Sucess" << endl;
 	}
 	else{
+		collision_count++;
 		cout << "Station " << stationNumber << " Tx Failed - Collision" << endl;
 	}
 
@@ -183,6 +184,8 @@ void MobileStation::main_loop(){
 	std::clock_t start;
 	double duration;
 	start = std::clock();
+	
+	collision_count = 0;
 
 	std::ofstream log;//writing
 	std::stringstream ss;//create a stringstream
@@ -214,6 +217,9 @@ void MobileStation::main_loop(){
 
 	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 	std::cout << "Total time: " << duration << " seconds" << endl;
+	std::cout << "Number of collision during transmission: " << collision_count << endl;
+	
+	log << "Number of collision during transmission: " << collision_count << endl;
 	log << "Total time: " << duration << " seconds" << endl;
 	log << "Wait time: " << wait_time << " seconds" << endl;
 	log << "Delay time: " << delay_time << " seconds" << endl;

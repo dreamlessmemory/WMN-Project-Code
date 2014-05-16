@@ -72,6 +72,7 @@ class MobileStation{
 		double delay_time;
 		double wait_time;
 		bool collision_flag;
+		int collision_count;
 		
 		//Flags
 		bool collided;
