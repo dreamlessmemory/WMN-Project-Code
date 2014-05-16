@@ -50,6 +50,9 @@
 #define DIFS 500 //Placeholder
 #define SIFS 200 //Placeholder
 
+//802.11 
+#define SLOT_TIME	50
+
 #define CLEAR true
 #define BUSY false
 
@@ -68,6 +71,7 @@ class MobileStation{
 		int packets[5];
 		double delay_time;
 		double wait_time;
+		bool collision_flag;
 		
 		//constructors
 		MobileStation();
@@ -78,9 +82,10 @@ class MobileStation{
 		void backoff(int);
 		bool transmit(int);
 		void debug_printStatus(void);
-		void pretendTransmitting(int);
+		bool pretendTransmitting(int);
 		void waitStandard(int);
-		
+		bool transmitting(int);		
+
 		//operations
 		void main_loop();
 		int pickPacket(void);

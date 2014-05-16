@@ -18,8 +18,8 @@ MobileStation::MobileStation(int number, BaseStation * station){
 /********************************** CSMA **************************************************/
 void MobileStation::backoff(int accessClass){
 	int backoff_time;
-	int cw_min = 0;
-	int cw_max = 0;
+	//int cw_min = 0;
+	//int cw_max = 0;
 
 	switch(accessClass){
 		case BEST_EFFORT:
@@ -29,7 +29,7 @@ void MobileStation::backoff(int accessClass){
 			backoff_time = rand() % (CWMAX_BK - CWMIN_BK) + CWMIN_BK;
 			break;
 		case VIDEO:
-			backoff_time = rand() % (CWMAX_VI - CWMIN_VI) + CW_MIN_VI;
+			backoff_time = rand() % (CWMAX_VI - CWMIN_VI) + CWMIN_VI;
 			break;
 		case VOICE:
 			backoff_time = rand() % (CWMAX_VO - CWMIN_VO) + CWMIN_VO;
@@ -63,7 +63,9 @@ void MobileStation::waitAIFS(int accessClass){
 }
 
 bool MobileStation::transmit(int accessClass){
-	
+	bool tx_done;
+	collision_flag = false;	
+
 	//Wait for open channel
 	waitStandard(accessClass);
 
@@ -74,6 +76,7 @@ bool MobileStation::transmit(int accessClass){
 	//set to transmitting mode
 	cout << "Station " << stationNumber << " attempting to transmit" << endl;
 	bool attempt = baseStationName -> attemptTransmission(this);
+
 	std::clock_t start;
     	start = std::clock();
 
@@ -90,38 +93,64 @@ bool MobileStation::transmit(int accessClass){
 	delay_time += ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
 	//pretend to transmit
-	pretendTransmitting(accessClass);
+	tx_done = pretendTransmitting(accessClass);
 
 	//finish
-	cout << "Station " << stationNumber << " Tx Sucess" << endl;
-	baseStationName->finishTransmission();
+	if(tx_done){
+		cout << "Station " << stationNumber << " Tx Sucess" << endl;
+	}
+	else{
+		cout << "Station " << stationNumber << " Tx Failed - Collision" << endl;
+	}
+
+	baseStationName->finishTransmission();	
 	
-	return true; //we tx successfully
+	return tx_done; //we tx successfully
 }
 
 void MobileStation::debug_printStatus(){
 	cout << "LOL" << endl;
 }
 
-void MobileStation::pretendTransmitting(int accessClass){
+bool MobileStation::pretendTransmitting(int accessClass){
 	//int packetSize = 0;
+	bool tx_finish = true;	
+
 	switch(accessClass){
 		case BEST_EFFORT:
-			usleep(5000);
+			tx_finish = transmitting(5000);
 			break;
 		case BACKGROUND:
-			usleep(3000);
+			tx_finish = transmitting(3000);
 			break;
 		case VIDEO:
-			usleep(7000);
+			tx_finish = transmitting(7000);
 			break;
 		case VOICE:
-			usleep(7000);
+			tx_finish = transmitting(7000);
 			break;
 		case DATA:
-			usleep(10000);
+			tx_finish = transmitting(10000);
 			break;
 	}
+
+	return tx_finish;
+}
+
+bool MobileStation::transmitting(int tx_time){
+	int count = 0;
+
+	while((count < tx_time) && !(collision_flag)){
+		count += SLOT_TIME;
+		usleep(SLOT_TIME);
+	}
+	
+	if(count != tx_time)
+	{
+		return false;
+	}
+
+	return true;
 }
 
 void MobileStation::waitStandard(int accessClass){
@@ -133,6 +162,7 @@ void MobileStation::waitStandard(int accessClass){
 		//cout << "Station " << stationNumber << " waiting DIFS" << endl;
 		usleep(DIFS);//Wait DIFS
 		waitAIFS(accessClass); //Wait AIFS
+
 		//cout << "Station " << stationNumber << " waiting AIFS" << endl;
 		//Sense Channel
 		//cout << "Station " << stationNumber << " Sensing Channel" << endl;
@@ -152,8 +182,10 @@ void MobileStation::main_loop(){
 
 	std::ofstream log;//writing
 	std::stringstream ss;//create a stringstream
+
 	ss << stationNumber;//add number to the stream
 	string log_name = std::string("Station_") + ss.str() + std::string(".txt");
+
 	//cout << "log name: " << log_name << endl;
 	log.open(log_name.c_str(), std::fstream::in | std::fstream::out | std::fstream::trunc); //problem
 
@@ -169,8 +201,9 @@ void MobileStation::main_loop(){
 	//Transmit loop
 	int newPacket = pickPacket();
 	while(newPacket != -1){
-		transmit(newPacket);
-		newPacket = pickPacket();
+		if(transmit(newPacket)){
+			newPacket = pickPacket();
+		}
 	}
 
 	std::cout << "Station " << stationNumber << " Transmissions completed" << endl;
