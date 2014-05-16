@@ -10,6 +10,7 @@ MobileStation::MobileStation(){
 MobileStation::MobileStation(int number, BaseStation * station){
 	stationNumber = number;
 	baseStationName = station;
+	collided = false;
 	
 	delay_time = 0.0;
 	wait_time = 0.0;
@@ -18,6 +19,7 @@ MobileStation::MobileStation(int number, BaseStation * station){
 /********************************** CSMA **************************************************/
 void MobileStation::backoff(int accessClass){
 	int backoff_time;
+
 	//int cw_min = 0;
 	//int cw_max = 0;
 
@@ -70,10 +72,10 @@ bool MobileStation::transmit(int accessClass){
 	waitStandard(accessClass);
 
 	//random wait for collisions?
-	int wait = rand() % 30000;
+	int wait = rand() % 100;
 	usleep(wait);
 	
-	//set to transmitting mode
+	//Attempt to Secure Channel
 	cout << "Station " << stationNumber << " attempting to transmit" << endl;
 	bool attempt = baseStationName -> attemptTransmission(this);
 
@@ -87,12 +89,14 @@ bool MobileStation::transmit(int accessClass){
 		waitStandard(accessClass);
 
 		//cout << "Station " << stationNumber << " re-attempting" << endl;
+		cout << "Station " << stationNumber << " re-attempting" << endl;
 		attempt = baseStationName -> attemptTransmission(this); //try again
 	}
 
 	delay_time += ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
 	//pretend to transmit
+
 	tx_done = pretendTransmitting(accessClass);
 
 	//finish
