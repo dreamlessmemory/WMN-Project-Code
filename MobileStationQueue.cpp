@@ -24,6 +24,11 @@ int main( int argc, const char* argv[] ){
 	
 	//MS setup
 	std::ifstream infile(argv[1]);
+
+	if(!infile){
+		cout << "Enter full input file name!" << endl;
+	}
+
 	int stationNumber, be, bk, vi, vo, da;
 
 	while(infile >> stationNumber >> be >> bk >> vi >> vo >> da){
