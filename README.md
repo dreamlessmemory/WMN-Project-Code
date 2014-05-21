@@ -4,7 +4,13 @@ WMN-Project-Code
 
 ELEN 6951 - Xusheng/Misha
 
-Compiling command: g++ -Wall -pthread MobileStationQueue.cpp MobileStation.cpp BaseStation.cpp -lboost_system -lboost_thread
+Compiling command: 
+
+g++ -Wall -pthread MobileStationQueue.cpp MobileStation.cpp BaseStation.cpp -lboost_system -lboost_thread -o e.out
+
+Compiling command for IEEE standard: 
+
+g++ -Wall -pthread MobileStationQueue.cpp MobileStation.cpp BaseStation.cpp -lboost_system -lboost_thread -o i.out -DIEEE_STANDARD
 
 Assume:
 

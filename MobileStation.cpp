@@ -79,8 +79,8 @@ bool MobileStation::transmit(int accessClass){
 	cout << "Station " << stationNumber << " attempting to transmit" << endl;
 	bool attempt = baseStationName -> attemptTransmission(this);
 
-	std::clock_t start;
-    	start = std::clock();
+	clock_t start;
+    	start = clock();
 
 	while(!attempt){
 		cout << "Station " << stationNumber << " Backing off" << endl;
@@ -160,8 +160,8 @@ bool MobileStation::transmitting(int tx_time){
 
 void MobileStation::waitStandard(int accessClass){
 	bool status = baseStationName -> getChannelStatus();
-	std::clock_t start;
-	start = std::clock();
+	clock_t start;
+	start = clock();
 
 	do {
 		//cout << "Station " << stationNumber << " waiting DIFS" << endl;
@@ -174,27 +174,27 @@ void MobileStation::waitStandard(int accessClass){
 		status = baseStationName -> getChannelStatus();
 	} while(status==BUSY);
 
-	wait_time += ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+	wait_time += ( clock() - start ) / (double) CLOCKS_PER_SEC;
 }
 
 /******************************** Operations ************************************************/
 
 void MobileStation::main_loop(){
 	
-	std::clock_t start;
+	clock_t start;
 	double duration;
 	start = std::clock();
 	
 	collision_count = 0;
 
-	std::ofstream log;//writing
-	std::stringstream ss;//create a stringstream
+	ofstream log;//writing
+	stringstream ss;//create a stringstream
 
 	ss << stationNumber;//add number to the stream
-	string log_name = std::string("Station_") + ss.str() + std::string(".txt");
+	string log_name = std::string("Station_") + ss.str() + string(".txt");
 
 	//cout << "log name: " << log_name << endl;
-	log.open(log_name.c_str(), std::fstream::in | std::fstream::out | std::fstream::trunc); //problem
+	log.open(log_name.c_str(), fstream::in | fstream::out | fstream::trunc); //problem
 
 	//Keep Track of what gets tx
 	log << log_name << endl;
@@ -213,11 +213,11 @@ void MobileStation::main_loop(){
 		}
 	}
 
-	std::cout << "Station " << stationNumber << " Transmissions completed" << endl;
+	cout << "Station " << stationNumber << " Transmissions completed" << endl;
 
 	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
-	std::cout << "Total time: " << duration << " seconds" << endl;
-	std::cout << "Number of collision during transmission: " << collision_count << endl;
+	cout << "Total time: " << duration << " seconds" << endl;
+	cout << "Number of collision during transmission: " << collision_count << endl;
 	
 	log << "Number of collision during transmission: " << collision_count << endl;
 	log << "Total time: " << duration << " seconds" << endl;

@@ -14,19 +14,15 @@ void startMobileStation(MobileStation station){
 
 int main( int argc, const char* argv[] ){
 	
-	if(!argc == 1){
-		cout << "Specifify input file\n";
-		return 0;
-	}
-	
 	//BS setup
 	BaseStation * base = new BaseStation();
 	
 	//MS setup
-	std::ifstream infile(argv[1]);
+	ifstream infile(argv[1]);
 
 	if(!infile){
-		cout << "Enter full input file name!" << endl;
+		cout << "Specifify input file." << endl;
+		return 0;
 	}
 
 	int stationNumber, be, bk, vi, vo, da;
@@ -39,7 +35,14 @@ int main( int argc, const char* argv[] ){
 		temp->packets[1] = bk;
 		temp->packets[2] = vi;
 		temp->packets[3] = vo;
+
+#ifdef IEEE_STANDARD
+		//if IEEE standardm make data packets as best effort class.
+		temp->packets[0] = temp->packets[0] + da;
+		temp->packets[4] = 0;
+#else
 		temp->packets[4] = da;
+#endif
 
 		base->addStation(*temp);
 	}
@@ -48,7 +51,7 @@ int main( int argc, const char* argv[] ){
 	//cout << "Checkpoint" << endl;
 	boost::thread_group mobileThreads;
 
-	for(std::vector<MobileStation>::iterator it = base->connectedStations.begin(); it != base->connectedStations.end(); ++it) {
+	for(vector<MobileStation>::iterator it = base->connectedStations.begin(); it != base->connectedStations.end(); ++it) {
 		mobileThreads.add_thread(new boost::thread(startMobileStation, *it));
 	}
 
