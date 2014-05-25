@@ -25,7 +25,7 @@ int main( int argc, const char* argv[] ){
 	ifstream infile(argv[1]);
 
 	if(!infile){
-		cout << "Specifify input file." << endl;
+		cout << "Specify input file." << endl;
 		return 0;
 	}
 
