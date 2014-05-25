@@ -1,0 +1,11 @@
+IEEE_Standard_heavy_data_Station_7.txt
+Transmitting:
+Best Effort	-	5500
+Background	-	500
+Video		-	500
+Voice		-	500
+Data		-	0
+Number of collision during transmission: 2406
+Total time: 1116.14 seconds
+Wait time: 180.45 seconds
+Delay time: 779.54 seconds

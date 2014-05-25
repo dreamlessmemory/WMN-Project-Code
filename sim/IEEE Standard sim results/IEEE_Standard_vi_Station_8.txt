@@ -1,0 +1,10 @@
+IEEE_Standard_vi_Station_8.txt
+Transmitting:
+Best Effort	-	0
+Background	-	0
+Video		-	500
+Voice		-	0
+Number of collision during transmission: 363
+Total time: 56.35 seconds
+Wait time: 15.86 seconds
+Delay time: 10.65 seconds

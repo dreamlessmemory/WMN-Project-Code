@@ -1,0 +1,11 @@
+vi_Station_10.txt
+Transmitting:
+Best Effort	-	0
+Background	-	0
+Video		-	500
+Voice		-	0
+Data		-	0
+Number of collision during transmission: 339
+Total time: 68.81 seconds
+Wait time: 18.55 seconds
+Delay time: 12.22 seconds

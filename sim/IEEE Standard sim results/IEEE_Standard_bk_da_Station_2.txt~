@@ -1,0 +1,11 @@
+IEEE_Standard_bk_da_Station_2.txt
+Transmitting:
+Best Effort	-	500
+Background	-	500
+Video		-	0
+Voice		-	0
+Data		-	0
+Number of collision during transmission: 335
+Total time: 120.16 seconds
+Wait time: 20.71 seconds
+Delay time: 84.94 seconds

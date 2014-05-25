@@ -1,0 +1,10 @@
+IEEE_Standard_be_Station_2.txt
+Transmitting:
+Best Effort	-	500
+Background	-	0
+Video		-	0
+Voice		-	0
+Number of collision during transmission: 173
+Total time: 65.78 seconds
+Wait time: 10.63 seconds
+Delay time: 43.93 seconds

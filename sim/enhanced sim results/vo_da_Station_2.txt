@@ -1,0 +1,11 @@
+vo_da_Station_2.txt
+Transmitting:
+Best Effort	-	0
+Background	-	0
+Video		-	0
+Voice		-	500
+Data		-	500
+Number of collision during transmission: 660
+Total time: 170.07 seconds
+Wait time: 44.38 seconds
+Delay time: 26.67 seconds

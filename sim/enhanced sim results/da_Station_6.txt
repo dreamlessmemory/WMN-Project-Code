@@ -1,0 +1,11 @@
+da_Station_6.txt
+Transmitting:
+Best Effort	-	0
+Background	-	0
+Video		-	0
+Voice		-	0
+Data		-	500
+Number of collision during transmission: 323
+Total time: 98.83 seconds
+Wait time: 23.61 seconds
+Delay time: 16.6 seconds

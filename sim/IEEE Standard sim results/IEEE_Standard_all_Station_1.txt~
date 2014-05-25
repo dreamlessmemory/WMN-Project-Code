@@ -1,0 +1,11 @@
+IEEE_Standard_all_Station_1.txt
+Transmitting:
+Best Effort	-	1000
+Background	-	500
+Video		-	500
+Voice		-	500
+Data		-	0
+Number of collision during transmission: 1102
+Total time: 319.9 seconds
+Wait time: 64.62 seconds
+Delay time: 198 seconds

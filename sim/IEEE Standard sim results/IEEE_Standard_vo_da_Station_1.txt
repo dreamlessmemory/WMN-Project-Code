@@ -1,0 +1,10 @@
+IEEE_Standard_vo_da_Station_1.txt
+Transmitting:
+Best Effort	-	500
+Background	-	0
+Video		-	0
+Voice		-	500
+Number of collision during transmission: 411
+Total time: 177.78 seconds
+Wait time: 32.17 seconds
+Delay time: 112.73 seconds

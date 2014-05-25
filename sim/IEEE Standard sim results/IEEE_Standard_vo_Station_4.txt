@@ -1,0 +1,10 @@
+IEEE_Standard_vo_Station_4.txt
+Transmitting:
+Best Effort	-	0
+Background	-	0
+Video		-	0
+Voice		-	500
+Number of collision during transmission: 389
+Total time: 54.73 seconds
+Wait time: 15.8 seconds
+Delay time: 8.07 seconds

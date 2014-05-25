@@ -1,0 +1,11 @@
+be_da_Station_5.txt
+Transmitting:
+Best Effort	-	500
+Background	-	0
+Video		-	0
+Voice		-	0
+Data		-	500
+Number of collision during transmission: 394
+Total time: 209.15 seconds
+Wait time: 34.8 seconds
+Delay time: 125.69 seconds

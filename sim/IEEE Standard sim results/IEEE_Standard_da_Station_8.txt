@@ -1,0 +1,10 @@
+IEEE_Standard_da_Station_8.txt
+Transmitting:
+Best Effort	-	500
+Background	-	0
+Video		-	0
+Voice		-	0
+Number of collision during transmission: 130
+Total time: 64.51 seconds
+Wait time: 8.89 seconds
+Delay time: 45.8 seconds

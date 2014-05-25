@@ -1,0 +1,11 @@
+all_Station_5.txt
+Transmitting:
+Best Effort	-	500
+Background	-	500
+Video		-	500
+Voice		-	500
+Data		-	500
+Number of collision during transmission: 1164
+Total time: 465.53 seconds
+Wait time: 94.84 seconds
+Delay time: 268.03 seconds

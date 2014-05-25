@@ -1,0 +1,11 @@
+vo_Station_8.txt
+Transmitting:
+Best Effort	-	0
+Background	-	0
+Video		-	0
+Voice		-	500
+Data		-	0
+Number of collision during transmission: 381
+Total time: 69.66 seconds
+Wait time: 18.86 seconds
+Delay time: 9.41 seconds

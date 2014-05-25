@@ -1,0 +1,11 @@
+heavy_data_Station_10.txt
+Transmitting:
+Best Effort	-	500
+Background	-	500
+Video		-	500
+Voice		-	500
+Data		-	5000
+Number of collision during transmission: 4024
+Total time: 1113.34 seconds
+Wait time: 255.15 seconds
+Delay time: 336.56 seconds

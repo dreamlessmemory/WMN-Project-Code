@@ -1,0 +1,11 @@
+bk_Station_1.txt
+Transmitting:
+Best Effort	-	0
+Background	-	500
+Video		-	0
+Voice		-	0
+Data		-	0
+Number of collision during transmission: 136
+Total time: 46.33 seconds
+Wait time: 5.3 seconds
+Delay time: 36.34 seconds
