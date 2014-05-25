@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
+#include <string>
 #include <iostream>
 #include <fstream>
 #include <cstdio>
@@ -73,6 +74,7 @@ class MobileStation{
 		double wait_time;
 		bool collision_flag;
 		int collision_count;
+		std::string testScenario; 
 		
 		//Flags
 		bool collided;

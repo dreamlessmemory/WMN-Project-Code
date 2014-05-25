@@ -191,7 +191,11 @@ void MobileStation::main_loop(){
 	stringstream ss;//create a stringstream
 
 	ss << stationNumber;//add number to the stream
-	string log_name = std::string("Station_") + ss.str() + string(".txt");
+	string log_name = testScenario + "_" + std::string("Station_") + ss.str() + string(".txt");
+
+#ifdef IEEE_STANDARD
+	log_name = "IEEE_Standard_" + log_name;
+#endif
 
 	//cout << "log name: " << log_name << endl;
 	log.open(log_name.c_str(), fstream::in | fstream::out | fstream::trunc); //problem
@@ -210,6 +214,9 @@ void MobileStation::main_loop(){
 	while(newPacket != -1){
 		if(transmit(newPacket)){
 			newPacket = pickPacket();
+		}
+		else{
+			cout << "Station " << stationNumber << " re-transmitting" << endl;
 		}
 	}
 

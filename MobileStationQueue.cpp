@@ -14,9 +14,13 @@ void startMobileStation(MobileStation station){
 
 int main( int argc, const char* argv[] ){
 	
+	int pos;
+	std::string testInput;
+	testInput = argv[1];	
+
 	//BS setup
 	BaseStation * base = new BaseStation();
-	
+
 	//MS setup
 	ifstream infile(argv[1]);
 
@@ -30,6 +34,13 @@ int main( int argc, const char* argv[] ){
 	while(infile >> stationNumber >> be >> bk >> vi >> vo >> da){
 		//cout << "CheckpointX" << endl;
 		MobileStation * temp = new MobileStation(stationNumber, base);
+	
+		pos = testInput.find('.');
+		if(pos > 0){
+			temp->testScenario = testInput.substr(0, pos);
+		}else{
+			temp->testScenario = testInput;
+		}
 
 		temp->packets[0] = be;
 		temp->packets[1] = bk;
