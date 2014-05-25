@@ -207,7 +207,10 @@ void MobileStation::main_loop(){
 	log << "Background\t-\t" << packets[1] << endl;
 	log << "Video\t\t-\t" << packets[2] << endl;
 	log << "Voice\t\t-\t" << packets[3] << endl;
+
+#ifndef IEEE_STANDARD
 	log << "Data\t\t-\t" << packets[4] << endl;
+#endif
 
 	//Transmit loop
 	int newPacket = pickPacket();
