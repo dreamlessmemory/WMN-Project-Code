@@ -4,7 +4,7 @@ Best Effort	-	1000
 Background	-	0
 Video		-	0
 Voice		-	0
-Number of collision during transmission: 329
-Total time: 138.03 seconds
-Wait time: 21.91 seconds
-Delay time: 94.98 seconds
+Number of collision during transmission: 292
+Total time: 125.74 seconds
+Wait time: 19.98 seconds
+Delay time: 84.67 seconds

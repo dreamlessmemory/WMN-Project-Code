@@ -4,7 +4,7 @@ Best Effort	-	1000
 Background	-	500
 Video		-	500
 Voice		-	500
-Number of collision during transmission: 999
-Total time: 312.16 seconds
-Wait time: 60.81 seconds
-Delay time: 190.63 seconds
+Number of collision during transmission: 1138
+Total time: 240.38 seconds
+Wait time: 53.39 seconds
+Delay time: 144.96 seconds

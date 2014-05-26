@@ -5,7 +5,7 @@ Background	-	500
 Video		-	500
 Voice		-	500
 Data		-	5000
-Number of collision during transmission: 3863
-Total time: 1099 seconds
-Wait time: 255.31 seconds
-Delay time: 327.86 seconds
+Number of collision during transmission: 3878
+Total time: 974.92 seconds
+Wait time: 233.21 seconds
+Delay time: 280.64 seconds

@@ -23,12 +23,22 @@
 
 //Parameters
 //Best Effort
-#define CWMIN_BE 15
+#ifdef IEEE_STANDARD
+	#define CWMIN_BE 15
+#else
+	#define CWMIN_BE 20
+#endif
+
 #define CWMAX_BE 1023
 #define AIFSN_BE 500
 
 // Background
-#define CWMIN_BK 15
+#ifdef IEEE_STANDARD
+	#define CWMIN_BK 15
+#else
+	#define CWMIN_BK 20
+#endif
+
 #define CWMAX_BK 1023
 #define AIFSN_BK 700
 
