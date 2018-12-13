@@ -2,8 +2,7 @@
 WMN-Project-Code
 ================
 
-ELEN 6951 - Xusheng/Misha
-
+ELEN 6951
 Compiling command: g++ -Wall -pthread MobileStationQueue.cpp MobileStation.cpp BaseStation.cpp -lboost_system -lboost_thread
 
 Assume:
